@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create New Event</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(to right, #ffe0cc, #ffd1b3);
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 700px;
+      background: white;
+      padding: 35px 40px;
+      margin: auto;
+      border-radius: 18px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #d2691e;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border 0.3s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #ff9966;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .submit-btn {
+      background-color: #ff9966;
+      color: white;
+      font-weight: bold;
+      padding: 14px;
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    .submit-btn:hover {
+      background-color: #ff884d;
+    }
+
+    .note {
+      text-align: center;
+      font-size: 13px;
+      color: #777;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Create New Event</h2>
+    <form id="eventForm">
+      <div class="form-group">
+        <label for="name">📛 Event Name</label>
+        <input type="text" id="name" placeholder="Enter event name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="date">📅 Date</label>
+        <input type="date" id="date" required>
+      </div>
+
+      <div class="form-group">
+        <label for="time">⏰ Time</label>
+        <input type="time" id="time" required>
+      </div>
+
+      <div class="form-group">
+        <label for="location">📍 Location</label>
+        <input type="text" id="location" placeholder="Enter venue or link" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">📝 Description</label>
+        <textarea id="description" rows="4" placeholder="Write a short description..." required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="department">🏫 Department</label>
+        <select id="department" required>
+          <option value="">Select department</option>
+          <option value="All">All Departments</option>
+          <option value="CSE">CSE</option>
+          <option value="ECE">ECE</option>
+          <option value="EEE">EEE</option>
+          <option value="MECH">MECH</option>
+          <option value="CIVIL">CIVIL</option>
+        </select>
+      </div>
+
+      <input class="submit-btn" type="submit" value="Create Event">
+    </form>
+
+    <p class="note">Make sure all event details are accurate before submission.</p>
+  </div>
+  
+  <script>
+    document.getElementById('eventForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        // 1. Get data from the form
+        const newEvent = {
+            name: document.getElementById('name').value,
+            date: document.getElementById('date').value,
+            time: document.getElementById('time').value,
+            location: document.getElementById('location').value,
+            description: document.getElementById('description').value,
+            department: document.getElementById('department').value
+        };
+
+        // 2. Get existing events from localStorage or create a new array
+        let events = JSON.parse(localStorage.getItem('events')) || [];
+
+        // 3. Add the new event to the array
+        events.push(newEvent);
+
+        // 4. Save the updated array back to localStorage
+        localStorage.setItem('events', JSON.stringify(events));
+
+        // 5. Notify the user and clear the form
+        alert('Event created successfully!');
+        this.reset();
+    });
+  </script>
+
+ </body>
+</html>

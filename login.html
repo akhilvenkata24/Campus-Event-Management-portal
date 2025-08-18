@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - Campus Event Hub</title>
+  <link rel="stylesheet" href="css/login.css" />
+  <style>
+    /* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #ffe5b4, #ffffff); /* Peach to white */
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  background-color: #fff;
+  padding: 20px 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  color: #333;
+  font-size: 1.8rem;
+}
+
+nav {
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #ff7f50; /* Coral/Peach accent */
+}
+
+/* Login Container */
+.login-container {
+  max-width: 400px;
+  margin: 60px auto;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form Styles */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  text-align: left;
+  font-weight: 500;
+  color: #444;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+button {
+  background-color: #ffb084;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #ff9560;
+}
+
+.register-link {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.register-link a {
+  color: #ff7f50;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+  </style>
+</head>
+<body>
+    <header>
+    <div class="container">
+      <h1>Campus Event Hub</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+        <a href="event_register.html">Event Registration</a>
+        <a href="contact.html">Contact</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+
+  <div class="login-container">
+    <h2>Login to Campus Event Hub</h2>
+    <form action="#" method="post">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required />
+
+      <button type="submit">Login</button>
+
+      <p class="register-link">Don't have an account? <a href="#">Register here</a></p>
+    </form>
+  </div>
+  
+<script >
+  // login.js
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("form");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+
+  form.addEventListener("submit", (e) => {
+    let valid = true;
+    clearErrors();
+
+    // Validate email
+    const emailValue = emailInput.value.trim();
+    if (!isValidEmail(emailValue)) {
+      showError(emailInput, "Please enter a valid email address");
+      valid = false;
+    }
+
+    // Validate password length
+    if (passwordInput.value.trim().length < 6) {
+      showError(passwordInput, "Password must be at least 6 characters long");
+      valid = false;
+    }
+
+    if (!valid) {
+      e.preventDefault(); // Stop form submission
+    }
+  });
+
+  // Email format check
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  // Show error below the field
+  function showError(input, message) {
+    const error = document.createElement("p");
+    error.className = "error-message";
+    error.style.color = "red";
+    error.style.fontSize = "0.85rem";
+    error.textContent = message;
+    input.insertAdjacentElement("afterend", error);
+    input.style.borderColor = "red";
+  }
+
+  // Remove previous errors
+  function clearErrors() {
+    document.querySelectorAll(".error-message").forEach(el => el.remove());
+    [emailInput, passwordInput].forEach(input => input.style.borderColor = "#ccc");
+  }
+});
+
+</script>
+
+</body>
+</html>

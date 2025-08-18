@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us - Campus Event Hub</title>
+  <style>
+    /* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #ffe5b4, #ffffff); /* Peach to white */
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  background-color: #fff;
+  padding: 20px 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header h1 {
+  color: #333;
+  font-size: 24px;
+}
+
+nav {
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #ff7f50;
+}
+
+/* About Content */
+.about-container {
+  max-width: 800px;
+  margin: 60px auto;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.about-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.about-container h3 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.about-container p {
+  line-height: 1.6;
+  color: #555;
+  margin-bottom: 16px;
+  font-size: 1.05rem;
+}
+
+.about-container ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.about-container li {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #444;
+  padding-left: 20px;
+  position: relative;
+}
+
+.about-container li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: #ff7f50;
+  font-weight: bold;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>Campus Event Hub</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+        <a href="event_register.html">Event Registration</a>
+        <a href="contact.html">Contact</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="about-container">
+    <h2>About Campus Event Hub</h2>
+    <p>
+      Campus Event Hub is your one-stop solution for discovering and registering for events happening on campus.
+      Whether it's a tech fest, workshop, sports day, or cultural night — we've got you covered.
+    </p>
+    <p>
+      Our goal is to simplify event management for students and faculty by offering a centralized platform for all event-related activities.
+      Stay updated, stay connected, and never miss out on exciting opportunities around you!
+    </p>
+    <h3>Why Choose Us?</h3>
+    <ul>
+      <li>📅 Easy event discovery and registration</li>
+      <li>📢 Instant updates and notifications</li>
+      <li>🤝 Seamless collaboration with organizers</li>
+      <li>🔐 Secure and student-friendly platform</li>
+    </ul>
+  </div>
+<script>
+  // about.js
+
+document.addEventListener("DOMContentLoaded", () => {
+  
+  // 1️⃣ Highlight active nav link
+  const currentPage = window.location.pathname.split("/").pop();
+  document.querySelectorAll("nav a").forEach(link => {
+    if (link.getAttribute("href") === currentPage) {
+      link.style.color = "#ff7f50";
+      link.style.fontWeight = "bold";
+    }
+  });
+
+  // 2️⃣ Fade-in animation for the about container
+  const aboutContainer = document.querySelector(".about-container");
+  aboutContainer.style.opacity = 0;
+  aboutContainer.style.transition = "opacity 1s ease-in-out";
+  setTimeout(() => {
+    aboutContainer.style.opacity = 1;
+  }, 100);
+
+  // 3️⃣ Optional: Welcome toast message
+  const toast = document.createElement("div");
+  toast.textContent = "🎉 Welcome to Campus Event Hub!";
+  toast.style.position = "fixed";
+  toast.style.bottom = "20px";
+  toast.style.right = "20px";
+  toast.style.background = "#ff7f50";
+  toast.style.color = "#fff";
+  toast.style.padding = "10px 20px";
+  toast.style.borderRadius = "8px";
+  toast.style.boxShadow = "0 4px 8px rgba(0,0,0,0.2)";
+  toast.style.fontSize = "0.9rem";
+  toast.style.zIndex = "1000";
+  document.body.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transition = "opacity 1s ease";
+    setTimeout(() => toast.remove(), 1000);
+  }, 3000);
+});
+
+</script>
+
+</body>
+</html>

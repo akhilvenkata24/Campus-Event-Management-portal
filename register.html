@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register - Campus Event Hub</title>
+  <link rel="stylesheet" href="css/register.css" />
+  <style>
+    /* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #ffe5b4, #ffffff); /* Peach to white */
+  min-height: 100vh;
+}
+
+/* Header */
+header {
+  background-color: #fff;
+  padding: 20px 40px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  color: #333;
+  font-size: 1.8rem;
+}
+
+nav {
+  display: flex;
+  gap: 20px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #555;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #ff7f50; /* Coral/Peach accent */
+}
+
+/* Register Container */
+.register-container {
+  max-width: 500px;
+  margin: 60px auto;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.register-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form Styles */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  text-align: left;
+  font-weight: 500;
+  color: #444;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+button {
+  background-color: #ffb084;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #ff9560;
+}
+
+.login-link {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.login-link a {
+  color: #ff7f50;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+  </style>
+</head>
+<body>
+    <header>
+    <div class="container">
+      <h1>Campus Event Hub</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+        <a href="event_register.html">Event Registration</a>
+        <a href="contact.html">Contact</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+  <div class="register-container">
+    <h2>Create an Account</h2>
+    <form action="#" method="post">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your full name" required />
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required />
+
+      <label for="studentid">Student ID</label>
+      <input type="text" id="studentid" name="studentid" placeholder="Enter your Student ID" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Create a password" required />
+
+      <label for="confirm">Confirm Password</label>
+      <input type="password" id="confirm" name="confirm" placeholder="Re-enter your password" required />
+
+      <button type="submit">Register</button>
+
+      <p class="login-link">Already have an account? <a href="login.html">Login here</a></p>
+    </form>
+  </div>
+<script >
+  // register.js
+
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.querySelector("form");
+  const nameInput = document.getElementById("name");
+  const emailInput = document.getElementById("email");
+  const studentIdInput = document.getElementById("studentid");
+  const passwordInput = document.getElementById("password");
+  const confirmInput = document.getElementById("confirm");
+
+  form.addEventListener("submit", (e) => {
+    let valid = true;
+    clearErrors();
+
+    // Full name validation (at least 2 words)
+    if (!/^[a-zA-Z]+(\s+[a-zA-Z]+)+$/.test(nameInput.value.trim())) {
+      showError(nameInput, "Please enter your full name (first and last name).");
+      valid = false;
+    }
+
+    // Email validation
+    if (!isValidEmail(emailInput.value.trim())) {
+      showError(emailInput, "Please enter a valid email address.");
+      valid = false;
+    }
+
+    // Student ID validation (only alphanumeric, 5–15 characters)
+    if (!/^[a-zA-Z0-9]{5,15}$/.test(studentIdInput.value.trim())) {
+      showError(studentIdInput, "Student ID must be 5–15 letters/numbers.");
+      valid = false;
+    }
+
+    // Password strength validation
+    if (!isStrongPassword(passwordInput.value.trim())) {
+      showError(passwordInput, "Password must be at least 8 characters, with uppercase, lowercase, number, and symbol.");
+      valid = false;
+    }
+
+    // Confirm password match
+    if (passwordInput.value.trim() !== confirmInput.value.trim()) {
+      showError(confirmInput, "Passwords do not match.");
+      valid = false;
+    }
+
+    if (!valid) {
+      e.preventDefault(); // Stop form submission
+    }
+  });
+
+  // Helper functions
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function isStrongPassword(password) {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(password);
+  }
+
+  function showError(input, message) {
+    const error = document.createElement("p");
+    error.className = "error-message";
+    error.style.color = "red";
+    error.style.fontSize = "0.85rem";
+    error.textContent = message;
+    input.insertAdjacentElement("afterend", error);
+    input.style.borderColor = "red";
+  }
+
+  function clearErrors() {
+    document.querySelectorAll(".error-message").forEach(el => el.remove());
+    [nameInput, emailInput, studentIdInput, passwordInput, confirmInput].forEach(input => input.style.borderColor = "#ccc");
+  }
+});
+
+</script>
+</body>
+</html>

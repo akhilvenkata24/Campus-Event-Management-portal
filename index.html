@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Campus Event Management Portal</title>
+  <style>
+    /* Global styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Header styles */
+header {
+  background-color: white;
+  padding: 1.5rem 3rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+header h1 {
+  color: #ff7f50; /* peachy orange */
+  font-size: 1.8rem;
+}
+
+nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+nav a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  transition: color 0.3s;
+}
+
+nav a:hover {
+  color: #ff7f50;
+}
+
+/* Hero section */
+.hero {
+  background: linear-gradient(to bottom, #ffe5b4, #fff); /* peach to white */
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 100px 20px;
+  min-height: calc(100vh - 140px); /* Adjust based on header+footer height */
+}
+
+.hero-card {
+  background-color: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 600px;
+}
+
+.hero-card h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.hero-card p {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+.btn {
+  display: inline-block;
+  background-color: #ffb084; /* peach */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #ff9560;
+}
+
+/* Footer */
+footer {
+  background-color:#FFDAB9;
+  text-align: center;
+  padding: 10px;
+  font-size: 13px;
+  color: #444;
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.05);
+}
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <h1>Campus Event Hub</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="events.html">Events</a>
+        <a href="login.html">Login</a>
+        <a href="register.html">Register</a>
+        <a href="event_register.html">Event Registration</a>
+        <a href="contact.html">Contact</a>
+        <a href="about.html">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="hero">
+    <div class="hero-card">
+      <h2>Welcome to the Campus Event Portal</h2>
+      <p>Discover, register, and manage exciting events happening around your campus.</p>
+      <a href="events.html" class="btn">Explore Events</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Campus Event Management Portal. All rights reserved.</p>
+  </footer>
+<script >
+  document.addEventListener("DOMContentLoaded", () => {
+  // 1. Dynamic greeting
+  const heroHeading = document.querySelector(".hero-card h2");
+  const currentHour = new Date().getHours();
+
+  let greeting;
+  if (currentHour < 12) {
+    greeting = "Good Morning! Welcome to the Campus Event Portal";
+  } else if (currentHour < 18) {
+    greeting = "Good Afternoon! Welcome to the Campus Event Portal";
+  } else {
+    greeting = "Good Evening! Welcome to the Campus Event Portal";
+  }
+  heroHeading.textContent = greeting;
+
+  // 2. Highlight active nav link
+  const currentPage = window.location.pathname.split("/").pop();
+  document.querySelectorAll("nav a").forEach(link => {
+    if (link.getAttribute("href") === currentPage) {
+      link.style.color = "#ff7f50";
+    }
+  });
+
+  // 3. Fade-in animation for hero card
+  const heroCard = document.querySelector(".hero-card");
+  heroCard.style.opacity = 0;
+  heroCard.style.transform = "translateY(20px)";
+  
+  setTimeout(() => {
+    heroCard.style.transition = "opacity 0.8s ease, transform 0.8s ease";
+    heroCard.style.opacity = 1;
+    heroCard.style.transform = "translateY(0)";
+  }, 200);
+});
+
+</script>
+
+</body>
+</html>
