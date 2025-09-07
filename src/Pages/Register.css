@@ -1,0 +1,83 @@
+.register-page {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px 25px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.register-page:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.register-page h2 {
+  text-align: center;
+  color: #ff5722;
+  margin-bottom: 25px;
+  font-size: 2rem;
+}
+
+.register-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.register-page label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.register-page input {
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.register-page input:focus {
+  outline: none;
+  border-color: #ff5722;
+  box-shadow: 0 0 5px rgba(255, 87, 34, 0.4);
+}
+
+.register-page button {
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  padding: 14px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.register-page button:hover {
+  background-color: #e64a19;
+  transform: scale(1.02);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .register-page {
+    margin: 20px;
+    padding: 25px 20px;
+  }
+
+  .register-page h2 {
+    font-size: 1.7rem;
+  }
+
+  .register-page input,
+  .register-page button {
+    font-size: 0.95rem;
+  }
+}
