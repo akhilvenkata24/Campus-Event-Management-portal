@@ -1,83 +1,65 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import "./Events.css"; 
 const Events = () => {
+  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [events, setEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const events = [
-    {
-      id: 1,
-      title: "Hackathon 2025",
-      date: "March 20, 2025",
-      time: "10:00 AM - 6:00 PM",
-      location: "Main Auditorium",
-      description: "A 24-hour coding competition for students. Show off your programming skills and win exciting prizes!",
-      status: "upcoming",
-      category: "technology",
-      attendees: 120,
-      image: "https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-    },
-    {
-      id: 2,
-      title: "Robotics Workshop",
-      date: "April 5, 2025",
-      time: "2:00 PM - 5:00 PM",
-      location: "Lab 101",
-      description: "Hands-on training on building autonomous robots. No prior experience required!",
-      status: "upcoming",
-      category: "workshop",
-      attendees: 85,
-      image: "https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-    },
-    {
-      id: 3,
-      title: "Cultural Fest",
-      date: "April 15, 2025",
-      time: "11:00 AM - 9:00 PM",
-      location: "College Grounds",
-      description: "Annual cultural festival with performances, food, and competitions from around the world.",
-      status: "upcoming",
-      category: "cultural",
-      attendees: 350,
-      image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-    },
-    {
-      id: 4,
-      title: "Tech Symposium",
-      date: "February 15, 2025",
-      time: "9:00 AM - 4:00 PM",
-      location: "Conference Hall",
-      description: "Discussion on latest tech trends and innovations with industry experts.",
-      status: "completed",
-      category: "technology",
-      attendees: 200,
-      image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-    },
-    {
-      id: 5,
-      title: "Sports Tournament",
-      date: "January 30, 2025",
-      time: "8:00 AM - 6:00 PM",
-      location: "Sports Complex",
-      description: "Annual inter-department sports competition with various games and activities.",
-      status: "completed",
-      category: "sports",
-      attendees: 180,
-      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-    },
-    {
-      id: 6,
-      title: "Career Fair",
-      date: "March 5, 2025",
-      time: "10:00 AM - 3:00 PM",
-      location: "Main Hall",
-      description: "Connect with top companies and explore job opportunities. Bring your resume!",
-      status: "upcoming",
-      category: "career",
-      attendees: 300,
-      image: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-    }
-  ];
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        // Build query params based on filters
+        const params = new URLSearchParams();
+        if (activeFilter !== 'all') {
+          if (['upcoming', 'completed'].includes(activeFilter)) {
+            params.append('status', activeFilter);
+          } else {
+            params.append('category', activeFilter);
+          }
+        }
+        if (searchQuery.trim()) {
+          params.append('search', searchQuery.trim());
+        }
+
+        const response = await fetch(`/api/events?${params.toString()}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch events');
+        }
+        const data = await response.json();
+        setEvents(data);
+      } catch (error) {
+        console.error('Error fetching events:', error);
+        alert('Failed to load events. Please try again later.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    setLoading(true);
+    const timeoutId = setTimeout(fetchEvents, 300); // Debounce searches
+    return () => clearTimeout(timeoutId);
+  }, [activeFilter, searchQuery]);
+
+
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  const eventsToDisplay = loading ? [] : events.map(event => ({
+    ...event,
+    id: event._id, // ensure id is consistent
+    date: formatDate(event.date),
+    status: new Date(event.date) > new Date() ? 'upcoming' : 'completed'
+  }));
 
   const categories = [
     { id: 'all', name: 'All Events' },
@@ -90,7 +72,7 @@ const Events = () => {
     { id: 'career', name: 'Career' }
   ];
 
-  const filteredEvents = events.filter(event => {
+  const filteredEvents = eventsToDisplay.filter(event => {
     const matchesFilter = activeFilter === 'all' || event.status === activeFilter || event.category === activeFilter;
     const matchesSearch = event.title.toLowerCase().includes(searchQuery.toLowerCase()) || event.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesFilter && matchesSearch;
@@ -139,12 +121,21 @@ const Events = () => {
         </div>
 
         {/* Events Grid */}
-        {filteredEvents.length > 0 ? (
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: '48px 0' }}>
+            <div className="loading-spinner"></div>
+            <h3 style={{ fontSize: '20px', color: '#555', marginBottom: '8px' }}>Loading events...</h3>
+          </div>
+        ) : filteredEvents.length > 0 ? (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '32px' }}>
             {filteredEvents.map(event => (
               <div key={event.id} style={{ backgroundColor: '#fff', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 4px 16px rgba(0,0,0,0.1)' }}>
                 <div style={{ position: 'relative', height: '200px', overflow: 'hidden' }}>
-                  <img src={event.image} alt={event.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img 
+                    src={event.image} 
+                    alt={event.title} 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
                   <div style={{
                     position: 'absolute',
                     top: '8px',
@@ -181,14 +172,17 @@ const Events = () => {
                     <strong>Location:</strong> {event.location}
                   </div>
 
-                  <button style={{
-                    backgroundColor: '#ff9457',
-                    color: '#fff',
-                    padding: '8px 16px',
-                    borderRadius: '8px',
-                    border: 'none',
-                    cursor: 'pointer'
-                  }}>
+                  <button
+                    onClick={() => navigate(`/events/${event._id || event.id}`)}
+                    style={{
+                      backgroundColor: '#ff9457',
+                      color: '#fff',
+                      padding: '8px 16px',
+                      borderRadius: '8px',
+                      border: 'none',
+                      cursor: 'pointer'
+                    }}
+                  >
                     View Details
                   </button>
                 </div>

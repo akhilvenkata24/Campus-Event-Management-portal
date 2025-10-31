@@ -14,10 +14,28 @@ const Contact = () => {
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Thank you! Your message has been sent successfully.");
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.msg || 'Failed to send message');
+      }
+
+      alert('Thank you! Your message has been sent successfully.');
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (err) {
+      console.error('Send message error:', err);
+      alert(err.message || 'Failed to send message. Please try again later.');
+    }
   };
 
   return (

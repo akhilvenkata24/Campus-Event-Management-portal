@@ -1,114 +1,131 @@
 import { useState } from "react";
-import "./CreateEvent.css"; // Import the CSS
+import { getAdminToken } from '../utils/auth';
 
 const CreateEvent = () => {
   const [formData, setFormData] = useState({
-    eventName: "",
+    title: "",
     date: "",
     time: "",
     location: "",
     description: "",
-    department: "",
+    category: "",
+    image: "",
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type } = e.target;
+    if (type === 'file') {
+      const file = e.target.files[0];
+      if (file) {
+        if (file.size > 5000000) { // 5MB limit
+          alert('File is too large. Please choose an image under 5MB.');
+          e.target.value = '';
+          return;
+        }
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setFormData(prev => ({ ...prev, [name]: reader.result }));
+        };
+        reader.onerror = () => {
+          alert('Error reading file');
+          e.target.value = '';
+        };
+        reader.readAsDataURL(file);
+      }
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("🎉 Event Created Successfully!\n\n" + JSON.stringify(formData, null, 2));
-    setFormData({
-      eventName: "",
-      date: "",
-      time: "",
-      location: "",
-      description: "",
-      department: "",
-    });
+    try {
+      // Check if the event date is in the future
+      const isUpcoming = new Date(formData.date) > new Date();
+      
+      const payload = { 
+        title: formData.title, 
+        description: formData.description, 
+        date: formData.date, 
+        time: formData.time,
+        location: formData.location, 
+        category: formData.category,
+        status: isUpcoming ? 'upcoming' : 'completed',
+        image: formData.image // Don't set default image here
+      };
+      // send to backend (proxy handles /api)
+      const res = await fetch('/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-auth-token': getAdminToken() },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('Failed to create event');
+      const data = await res.json();
+      alert('Event created successfully');
+      console.log('Created', data);
+      setFormData({ title: '', date: '', time: '', location: '', description: '', category: '' });
+    } catch (err) {
+      console.error(err);
+      alert('Error creating event — check console');
+    }
   };
 
   return (
-    <div className="create-event-container">
-      <div className="create-event-wrapper">
+    <div className="container">
+      <div className="card" style={{maxWidth:820, margin:'24px auto'}}>
         <h2>Create New Event</h2>
-
         <form onSubmit={handleSubmit}>
-          <label htmlFor="eventName">📛 Event Name</label>
-          <input
-            type="text"
-            id="eventName"
-            name="eventName"
-            value={formData.eventName}
-            onChange={handleChange}
-            placeholder="Enter event name"
-            required
-          />
+          <label>Event Title</label>
+          <input name="title" value={formData.title} onChange={handleChange} required />
 
-          <div className="flex-row">
+          <div className="form-row">
             <div>
-              <label htmlFor="date">📅 Date</label>
-              <input
-                type="date"
-                id="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                required
-              />
+              <label>Date</label>
+              <input name="date" type="date" value={formData.date} onChange={handleChange} required />
             </div>
             <div>
-              <label htmlFor="time">⏰ Time</label>
-              <input
-                type="time"
-                id="time"
-                name="time"
-                value={formData.time}
-                onChange={handleChange}
-                required
-              />
+              <label>Time</label>
+              <input name="time" type="time" value={formData.time} onChange={handleChange} />
             </div>
           </div>
 
-          <label htmlFor="location">📍 Location</label>
-          <input
-            type="text"
-            id="location"
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            placeholder="Enter venue or link"
-            required
-          />
+          <label>Location</label>
+          <input name="location" value={formData.location} onChange={handleChange} />
 
-          <label htmlFor="description">📝 Description</label>
-          <textarea
-            id="description"
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            placeholder="Write a short description..."
-            required
-          />
+          <label>Description</label>
+          <textarea name="description" value={formData.description} onChange={handleChange} />
 
-          <label htmlFor="department">🏫 Department</label>
-          <select
-            id="department"
-            name="department"
-            value={formData.department}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select department</option>
-            <option value="cse">Computer Science</option>
-            <option value="ece">Electronics</option>
-            <option value="mech">Mechanical</option>
-            <option value="civil">Civil</option>
+          <label>Category</label>
+          <select name="category" value={formData.category} onChange={handleChange}>
+            <option value="">Select category</option>
+            <option value="technology">Technology</option>
+            <option value="workshop">Workshop</option>
+            <option value="cultural">Cultural</option>
+            <option value="sports">Sports</option>
+            <option value="career">Career</option>
           </select>
 
-          <button type="submit">Create Event</button>
-          <p>Make sure all event details are accurate before submission.</p>
+          <label>Event Image</label>
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            onChange={handleChange}
+            style={{ marginBottom: '16px' }}
+          />
+          {formData.image && (
+            <div style={{ marginBottom: '16px' }}>
+              <img 
+                src={formData.image} 
+                alt="Event preview" 
+                style={{ maxWidth: '200px', borderRadius: '8px' }} 
+              />
+            </div>
+          )}
+
+          <div style={{display:'flex',justifyContent:'flex-end',marginTop:8}}>
+            <button className="btn-primary" type="submit">Create Event</button>
+          </div>
         </form>
       </div>
     </div>

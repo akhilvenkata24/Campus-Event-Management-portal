@@ -68,3 +68,30 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Backend
+
+There is a simple Express + MongoDB backend in the `backend/` folder.
+
+Quick steps to run locally:
+
+1. In one terminal, install and start the frontend:
+
+```powershell
+cd frontend_root_here_or_repo_root
+npm install
+npm start
+```
+
+2. In another terminal, install backend deps and start server:
+
+```powershell
+cd backend
+npm install
+copy .env.example .env
+# edit .env to set MONGO_URI and JWT_SECRET
+npm start
+```
+
+The React app is configured with a proxy to `http://localhost:5000` so API calls to `/api/*` will be forwarded to the backend in development.
+
