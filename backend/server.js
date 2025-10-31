@@ -32,8 +32,30 @@ connectDB();
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "cross-origin" } // Allow loading images from different origins
 }));
+
+// CORS configuration - Updated for Vercel deployment
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://127.0.0.1:3000',
+  process.env.FRONTEND_URL, // Add your Vercel frontend URL
+  /vercel\.app$/ // Allow all Vercel preview URLs
+].filter(Boolean);
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.some(allowed => {
+      if (typeof allowed === 'string') return allowed === origin;
+      if (allowed instanceof RegExp) return allowed.test(origin);
+      return false;
+    })) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Accept', 'x-auth-token']
@@ -61,13 +83,19 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3001;
-const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received. Closing server...');
-  server.close(() => {
-    console.log('Server closed');
-    process.exit(0);
+// Export for Vercel serverless
+if (process.env.VERCEL) {
+  module.exports = app;
+} else {
+  const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+  // Graceful shutdown
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM signal received. Closing server...');
+    server.close(() => {
+      console.log('Server closed');
+      process.exit(0);
+    });
   });
-});
+}
