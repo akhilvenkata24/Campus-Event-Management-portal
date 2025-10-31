@@ -19,7 +19,7 @@
     "start:server": "cd backend && nodemon server.js",
     "dev": "concurrently \"npm run start:client\" \"npm run start:server\"",
     "build": "react-scripts build",
-    "vercel-build": "npm install && npm run build",
+    "vercel-build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
