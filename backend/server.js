@@ -5,19 +5,24 @@ const morgan = require('morgan');
 const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 
-// Handle uncaught exceptions
+// Load environment variables
+dotenv.config();
+
+// Handle uncaught exceptions (only exit if not in serverless)
 process.on('uncaughtException', (err) => {
   console.error('Uncaught Exception:', err);
-  process.exit(1);
+  if (!process.env.VERCEL) {
+    process.exit(1);
+  }
 });
 
-// Handle unhandled promise rejections
+// Handle unhandled promise rejections (only exit if not in serverless)
 process.on('unhandledRejection', (err) => {
   console.error('Unhandled Rejection:', err);
-  process.exit(1);
+  if (!process.env.VERCEL) {
+    process.exit(1);
+  }
 });
-
-dotenv.config();
 
 const app = express();
 
@@ -25,8 +30,8 @@ const app = express();
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// connect to DB
-connectDB();
+// Connect to DB (async - will be cached in serverless)
+connectDB().catch(err => console.error('DB connection failed:', err));
 
 // Security middleware
 app.use(helmet({
