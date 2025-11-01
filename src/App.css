@@ -19,6 +19,7 @@ body{margin:0;font-family:'Segoe UI',Tahoma,Arial;background:var(--bg);color:#22
 .navbar{display:flex;gap:12px;flex-wrap:wrap}
 .navbar a{color:#333;padding:8px 12px;border-radius:8px;font-weight:600}
 .navbar a:hover{background:rgba(0,0,0,0.04)}
+.nav-toggle{display:none;background:transparent;border:none;font-size:1.5rem;cursor:pointer}
 
 .main-content{padding:28px 0}
 
@@ -71,6 +72,15 @@ img{max-width:100%;height:auto}
 @media(max-width:768px){
   .form-row{flex-direction:column}
   .header-inner{flex-direction:column;gap:8px}
-  .navbar{justify-content:center}
-  .navbar a{padding:8px 10px}
+  .nav-toggle{display:block;align-self:flex-end}
+  .navbar{width:100%;display:none;flex-direction:column;align-items:center}
+  .navbar.open{display:flex}
+  .navbar a{padding:10px 12px;width:100%;text-align:center}
+  .hero h1{font-size:1.75rem}
+  .hero p{font-size:0.95rem}
+}
+
+@media(min-width:992px){
+  .hero h1{font-size:3rem}
+  .hero p{font-size:1.15rem}
 }

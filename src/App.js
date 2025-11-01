@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { useState } from 'react';
 import './App.css';
 import Events from './Pages/Events';
 import EventRegister from './Pages/EventRegister';
@@ -15,12 +16,16 @@ import AdminMessages from './Pages/AdminMessages';
 import { isAdminAuthenticated } from './utils/auth';
 
 function App() {
+  const [navOpen, setNavOpen] = useState(false);
   return (
     <Router>
       <header className="site-header">
         <div className="container header-inner">
           <h1 className="brand">Campus Event Hub</h1>
-          <nav className="navbar">
+          <button className="nav-toggle" aria-label="Toggle navigation" onClick={() => setNavOpen(o=>!o)}>
+            ☰
+          </button>
+          <nav className={`navbar ${navOpen ? 'open' : ''}`} onClick={() => setNavOpen(false)}>
             <Link to="/">Home</Link>
             <Link to="/events">Events</Link>
             <Link to="/register">Register</Link>

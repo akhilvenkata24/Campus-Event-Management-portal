@@ -12,13 +12,13 @@ const Home = () => {
 				textAlign: 'center',
 				padding: '48px 24px'
 			}}>
-				<h1 style={{fontSize: '3rem', marginBottom: '24px'}}>
+							<h1 style={{marginBottom: '24px'}}>
 					Welcome to <span className="highlight">Campus Event Hub</span>
 				</h1>
-				<p style={{fontSize: '1.25rem', maxWidth: '600px', marginBottom: '32px', lineHeight: 1.6}}>
+							<p style={{maxWidth: '600px', marginBottom: '32px', lineHeight: 1.6}}>
 					Discover, register, and manage campus events in one centralized place. Stay connected with all the exciting activities happening on campus!
 				</p>
-				<div style={{display: 'flex', gap: '16px'}}>
+							<div style={{display: 'flex', gap: '16px', flexWrap:'wrap', justifyContent:'center'}}>
 					<Link className="btn btn-primary hero-cta" to="/events">
 						Explore Events
 					</Link>
