@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import config from '../config';
 
 
 const EventDetails = () => {
@@ -12,7 +13,7 @@ const EventDetails = () => {
     const fetchEvent = async () => {
       try {
         // Don't send admin token for public view
-        const res = await fetch(`/api/events/${id}`);
+        const res = await fetch(`${config.API_URL}/events/${id}`);
         if (!res.ok) {
           if (res.status === 404) {
             throw new Error('Event not found');

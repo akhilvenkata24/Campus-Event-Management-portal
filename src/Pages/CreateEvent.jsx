@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { getAdminToken } from '../utils/auth';
+import config from '../config';
 
 const CreateEvent = () => {
   const [formData, setFormData] = useState({
@@ -53,8 +54,8 @@ const CreateEvent = () => {
         status: isUpcoming ? 'upcoming' : 'completed',
         image: formData.image // Don't set default image here
       };
-      // send to backend (proxy handles /api)
-      const res = await fetch('/api/events', {
+      // send to backend
+      const res = await fetch(`${config.API_URL}/events`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-auth-token': getAdminToken() },
         body: JSON.stringify(payload)

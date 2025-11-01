@@ -1,6 +1,7 @@
+import config from '../config';
 const KEY = 'campus_admin_authenticated';
 const TOKEN_KEY = 'campus_admin_token';
-// Using relative URL because we have proxy configured in package.json
+// Use central API base URL
 
 
 // Function to securely store token with expiration
@@ -19,7 +20,7 @@ const securelyStoreToken = (token) => {
 
 export async function loginAdmin(email, password) {
   try {
-    const res = await fetch('/api/admin/login', { 
+    const res = await fetch(`${config.API_URL}/admin/login`, { 
       method: 'POST', 
       headers: { 
         'Content-Type': 'application/json',

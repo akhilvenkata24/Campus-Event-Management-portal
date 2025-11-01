@@ -1,4 +1,5 @@
 import { useState } from "react";
+import config from '../config';
 import "./Contact.css"; // Import the CSS file
 
 const Contact = () => {
@@ -17,7 +18,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch(`${config.API_URL}/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

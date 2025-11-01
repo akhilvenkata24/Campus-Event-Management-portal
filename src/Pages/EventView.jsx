@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import config from '../config';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const EventView = () => {
@@ -12,7 +13,7 @@ const EventView = () => {
     const fetchEvent = async () => {
       try {
         setLoading(true);
-        const res = await fetch(`/api/events/${id}`);
+  const res = await fetch(`${config.API_URL}/events/${id}`);
         if (!res.ok) throw new Error('Event not found');
         const data = await res.json();
         

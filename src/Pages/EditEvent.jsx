@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from 'react-router-dom';
 import { getAdminToken } from '../utils/auth';
+import config from '../config';
 
 const EditEvent = () => {
   const { id } = useParams();
@@ -20,7 +21,7 @@ const EditEvent = () => {
   useEffect(() => {
     const fetchEvent = async () => {
       try {
-        const res = await fetch(`/api/events/${id}`, {
+        const res = await fetch(`${config.API_URL}/events/${id}`, {
           headers: { 'x-auth-token': getAdminToken() }
         });
         if (!res.ok) throw new Error('Failed to fetch event');
@@ -89,7 +90,7 @@ const EditEvent = () => {
         image: formData.image // Only send if changed
       };
 
-      const res = await fetch(`/api/events/${id}`, {
+      const res = await fetch(`${config.API_URL}/events/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAdminToken } from '../utils/auth';
 import './AdminMessages.css';
+import config from '../config';
 
 const AdminMessages = () => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const AdminMessages = () => {
         return;
       }
       
-      const res = await fetch('/api/contact', {
+      const res = await fetch(`${config.API_URL}/contact`, {
         headers: {
           'x-auth-token': token,
           'Content-Type': 'application/json'
@@ -49,7 +50,7 @@ const AdminMessages = () => {
       if (!token) {
         throw new Error('Authentication token not found');
       }
-      const res = await fetch(`/api/contact/${id}`, {
+      const res = await fetch(`${config.API_URL}/contact/${id}`, {
         method: 'PUT',
         headers: {
           'x-auth-token': token,
@@ -78,7 +79,7 @@ const AdminMessages = () => {
       if (!token) {
         throw new Error('Authentication token not found');
       }
-      const res = await fetch(`/api/contact/${id}`, {
+      const res = await fetch(`${config.API_URL}/contact/${id}`, {
         method: 'DELETE',
         headers: {
           'x-auth-token': token,

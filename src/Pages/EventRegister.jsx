@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import config from '../config';
 import "./EventRegister.css";
 
 const EventRegister = () => {
@@ -19,7 +20,7 @@ const EventRegister = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await fetch('/api/events');
+  const res = await fetch(`${config.API_URL}/events`);
         const data = await res.json();
         const availableEvents = data.filter(event => {
           const eventDate = new Date(event.date);
@@ -85,7 +86,7 @@ const EventRegister = () => {
 
     setIsSubmitting(true);
     try {
-      const res = await fetch('/api/registrations', {
+      const res = await fetch(`${config.API_URL}/registrations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)

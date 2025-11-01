@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { getAdminToken, logoutAdmin } from '../utils/auth';
+import config from '../config';
 
 const AdminDashboard = () => {
   const [events, setEvents] = useState([]);
@@ -21,8 +22,8 @@ const AdminDashboard = () => {
     const load = async () => {
       try {
         const [eventsRes, regsRes] = await Promise.all([
-          fetch('http://localhost:5000/api/events'),
-          fetch('http://localhost:5000/api/registrations', {
+          fetch(`${config.API_URL}/events`),
+          fetch(`${config.API_URL}/registrations`, {
             headers: { 'x-auth-token': getAdminToken() }
           })
         ]);
@@ -46,7 +47,7 @@ const AdminDashboard = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this event?')) return;
     try {
-      const res = await fetch(`http://localhost:5000/api/events/${id}`, { method: 'DELETE', headers: { 'x-auth-token': getAdminToken() } });
+  const res = await fetch(`${config.API_URL}/events/${id}`, { method: 'DELETE', headers: { 'x-auth-token': getAdminToken() } });
       if (!res.ok) throw new Error('Failed');
       setEvents(prev => prev.filter(e => (e._id || e.id) !== id));
     } catch (err) {
@@ -63,7 +64,7 @@ const AdminDashboard = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:5000/api/registrations/download/${eventId}`, {
+      const res = await fetch(`${config.API_URL}/registrations/download/${eventId}`, {
         headers: { 'x-auth-token': token }
       });
 

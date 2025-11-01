@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import "./Events.css"; 
+import config from '../config';
 const Events = () => {
   const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState('all');
@@ -24,7 +25,7 @@ const Events = () => {
           params.append('search', searchQuery.trim());
         }
 
-        const response = await fetch(`/api/events?${params.toString()}`);
+        const response = await fetch(`${config.API_URL}/events?${params.toString()}`);
         if (!response.ok) {
           throw new Error('Failed to fetch events');
         }
