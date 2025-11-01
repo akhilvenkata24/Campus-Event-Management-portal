@@ -86,3 +86,9 @@
   color: #555;
   margin-top: 12px;
 }
+
+/* Responsive */
+@media (max-width: 640px) {
+  .flex-row { flex-direction: column; }
+  .create-event-wrapper { padding: 24px; border-radius: 16px; }
+}

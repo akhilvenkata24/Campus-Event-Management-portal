@@ -2,7 +2,7 @@
 .contact-container {
   min-height: 100vh;
   background-color: #fef3e7;
-  padding: 40px;
+  padding: 40px 16px;
   font-family: Arial, sans-serif;
 }
 
@@ -63,4 +63,8 @@
 
 .contact-form-wrapper button:hover {
   background: #cc5f2f;
+}
+
+@media (max-width: 640px) {
+  .contact-form-wrapper { padding: 20px; border-radius: 8px; }
 }

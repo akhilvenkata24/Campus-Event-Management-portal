@@ -127,6 +127,7 @@ const AdminDashboard = () => {
                 <p className="muted">No registrations for this event</p>
               ) : (
                 <>
+                  <div className="table-responsive">
                   <table className="table">
                     <thead>
                       <tr>
@@ -147,6 +148,7 @@ const AdminDashboard = () => {
                       ))}
                     </tbody>
                   </table>
+                  </div>
                   {eventRegs.length > 2 && (
                     <p className="muted" style={{textAlign: 'center', marginTop: 10}}>
                       +{eventRegs.length - 2} more registrations
@@ -171,6 +173,7 @@ const AdminDashboard = () => {
         <h3>Events</h3>
         {loading ? <p>Loading…</p> : (
           events.length === 0 ? <p className="muted">No events yet</p> : (
+            <div className="table-responsive">
             <table className="table">
               <thead>
                 <tr><th>Title</th><th>Date</th><th>Category</th><th>Actions</th></tr>
@@ -190,6 +193,7 @@ const AdminDashboard = () => {
                 ))}
               </tbody>
             </table>
+            </div>
           )
         )}
       </div>
